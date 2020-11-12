@@ -1,19 +1,44 @@
-import React from 'react'
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { startSaveNote, startUploadPicture } from "../../actions/notes";
 
 export const NotesAppBar = () => {
-    return (
-        <div className="notes__appbar">
-            <span>28 de agosto 2020</span>
+  const dispatch = useDispatch();
+  const { active } = useSelector((state) => state.notes);
 
-            <div>
-                <button className="btn">
-                    Picture
-                </button>
+  const handleSave = () => {
+    dispatch(startSaveNote(active));
+  };
 
-                <button className="btn">
-                    Save
-                </button>
-            </div>
-        </div>
-    )
-}
+  const handleClickPicture = () => {
+    document.querySelector("#picture").click();
+  };
+
+  const handleUploadPicture = (e) => {
+    dispatch( startUploadPicture(e.target.files[0]))
+  };
+
+  return (
+    <div className="notes__appbar">
+      <span>28 de agosto 2020</span>
+
+      <input
+        type="file"
+        name="picture"
+        id="picture"
+        onChange={handleUploadPicture}
+        style={{ display: "none" }}
+      />
+
+      <div>
+        <button onClick={handleClickPicture} className="btn">
+          Picture
+        </button>
+
+        <button onClick={handleSave} className="btn">
+          Save
+        </button>
+      </div>
+    </div>
+  );
+};
